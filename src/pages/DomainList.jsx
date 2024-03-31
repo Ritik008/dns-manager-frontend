@@ -27,14 +27,6 @@ const DomainList = () => {
     }
   }
 
-  const editHostedZoneHandler = () => {
-
-  }
-
-  const viewHostedZoneHandler = () => {
-
-  }
-
   return (
     <div className="container m-auto">
       <h1 className="text-2xl font-bold mb-4 mt-6">List of Domains</h1>
@@ -82,7 +74,7 @@ const DomainList = () => {
                   {zone.Id.split("/")[zone.Id.split("/").length - 1]}
                 </td>
                 <td className="border p-2">
-                  <Link to="/" className="text-blue-600 hover:text-blue-700">
+                  <Link to={`/domain/record/${zone.Id.split("/")[zone.Id.split("/").length - 1]}`} className="text-blue-600 hover:text-blue-700">
                     {zone.Name}
                   </Link>
                 </td>
