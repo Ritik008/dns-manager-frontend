@@ -6,6 +6,7 @@ import DomainForm from './pages/DomainForm';
 import axios from 'axios';
 import DomainEditForm from './pages/DomainEditForm';
 import DomainRecordsPage from './pages/DomainRecord';
+import AddDomainRecordForm from './pages/SubdomainRecord';
 
 const App = () => {
   
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/create-domain" element={<DomainForm />} />
           <Route path="/edit-domain/:id" element={<DomainEditForm />} />
           <Route path="/domain/record/:id" element={<DomainRecordsPage />} />
+          <Route path="/create/record/:id" element={<AddDomainRecordForm />} />
         </Routes>
       </div>
     </Router>

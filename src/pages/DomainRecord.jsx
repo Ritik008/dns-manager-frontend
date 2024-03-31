@@ -33,9 +33,9 @@ const DomainRecordsPage = () => {
         <button class="mx-3 border border-gray-500 hover:bg-red-600 hover:border-none hover:text-white font-bold py-2 px-4 rounded">
           Delete
         </button>
-        <button class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
+        <Link to={`/create/record/${id}`} class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
           Create Record
-        </button>
+        </Link>
       </div>
       <table className="min-w-full border">
         <thead>
@@ -54,10 +54,10 @@ const DomainRecordsPage = () => {
                  <td className="border p-2">
                   <input type="radio" name="action" id="action"  />
                 </td>
-                <td className="px-4 py-2">{record.Name}</td>
-                <td className="px-4 py-2">{record.Type}</td>
-                <td className="px-4 py-2">{record.TTL}</td>
-                <td className="px-4 py-2">
+                <td className="border px-4 py-2">{record.Name}</td>
+                <td className="border px-4 py-2">{record.Type}</td>
+                <td className="border px-4 py-2">{record.TTL}</td>
+                <td className="border px-4 py-2">
                   {record.ResourceRecords.map((ip) => (
                     <p className="px-4 py-2 text-center">{ip.Value}</p>
                   ))}
