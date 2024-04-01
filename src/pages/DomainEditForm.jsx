@@ -30,8 +30,7 @@ const DomainEditForm = () => {
       })
       .catch((error) => {
         console.error("Error creating domain:", error);
-        // Add logic to handle error
-      });
+       });
   };
 
   const editComment = () => {

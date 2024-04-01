@@ -41,7 +41,6 @@ const DomainRecordsPage = () => {
         }
       });
       console.log("File uploaded successfully");
-      // Optionally, you can perform any action after the file is uploaded
     } catch (error) {
       console.error("Error uploading file:", error);
     }

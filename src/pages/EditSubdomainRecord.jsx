@@ -21,11 +21,9 @@ const EditSubdomainRecord = () => {
         formData
       );
       console.log("Domain record updated successfully");
-      // Optionally, you can perform any action after the record is updated, such as displaying a success message or redirecting the user
-    } catch (error) {
+     } catch (error) {
       console.error("Error updating domain record:", error);
-      // Optionally, you can handle the error, such as displaying an error message to the user
-    }
+     }
   };
 
   useEffect(() => {
