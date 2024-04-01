@@ -11,7 +11,6 @@ const AddDomainRecordForm = () => {
     ttl: "",
   }
   const [formData, setFormData] = useState(initialValue);
-
   const [domainRecords, setDomainRecords] = useState()
 
   const { id } = useParams();
