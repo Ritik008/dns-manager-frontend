@@ -5,7 +5,6 @@ import DomainForm from './pages/DomainForm';
 import DomainEditForm from './pages/DomainEditForm';
 import DomainRecordsPage from './pages/SubDomainRecord';
 import AddDomainRecordForm from './pages/AddSubdomainRecord';
-import EditSubdomainRecord from './pages/EditSubdomainRecord';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoutes';
