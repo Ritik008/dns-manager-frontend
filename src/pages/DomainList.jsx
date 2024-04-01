@@ -3,9 +3,12 @@ import axios from "axios";
 import { BASE_URL } from "../contast";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { toast } from "react-toastify";
+
 const DomainList = () => {
   const [domains, setDomains] = useState([]);
   const [hostedZoneId, setHostedZoneId] = useState("");
+  
   useEffect(() => {
     axios
       .get(`${BASE_URL}/api/dns/domains`)
@@ -15,6 +18,7 @@ const DomainList = () => {
       })
       .catch((error) => {
         console.error("Error fetching domains:", error);
+        toast.error("Failed to fetch domains. Please try again later.");
       });
   }, []);
 
@@ -25,8 +29,10 @@ const DomainList = () => {
       );
       console.log("Hosted zone deleted successfully:", response.data);
       window.location.reload();
+      toast.success("Hosted zone deleted successfully.");
     } catch (error) {
       console.error("Error deleting hosted zone:", error.message);
+      toast.error("Failed to delete hosted zone. Please try again later.");
     }
   };
 
@@ -52,13 +58,12 @@ const DomainList = () => {
         }
       );
       console.log("File uploaded successfully:", response.data);
-      // Optionally, you can perform any action after the file upload is completed, such as displaying a success message or updating the UI
+      toast.success("File uploaded successfully.");
     } catch (error) {
       console.error("Error uploading file:", error);
-      // Optionally, you can handle the error, such as displaying an error message to the user
+      toast.error("Failed to upload file. Please try again later.");
     }
   };
-
   return (
     <div>
       <Navbar />

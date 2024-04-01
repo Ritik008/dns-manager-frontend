@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, redirect, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../contast';
 
 const Login = () => {
@@ -24,6 +24,10 @@ const Login = () => {
       console.error('Login Error:', error);
     }
   };
+
+  if(localStorage.getItem('token')) {
+    return <Navigate to="/domains"/>
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

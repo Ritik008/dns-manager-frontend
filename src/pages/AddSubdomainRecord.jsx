@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../contast";
+import { toast } from "react-toastify";
+import Navbar from "../components/Navbar";
 
 const AddDomainRecordForm = () => {
   const initialValue = {
@@ -9,10 +11,9 @@ const AddDomainRecordForm = () => {
     type: "",
     values: [],
     ttl: "",
-  }
+  };
   const [formData, setFormData] = useState(initialValue);
-  const [domainRecords, setDomainRecords] = useState()
-
+  const [domainRecords, setDomainRecords] = useState(null);
   const { id } = useParams();
 
   const handleChange = (e) => {
@@ -22,15 +23,18 @@ const AddDomainRecordForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.name || !formData.type || !formData.ttl) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
     try {
-      formData.name = formData.name+'.'+domainRecords.name
+      formData.name = formData.name + "." + domainRecords.name;
       await axios.post(`${BASE_URL}/api/dns/domains/${id}/records`, formData);
-      console.log("Domain record added successfully");
-      setFormData(initialValue)
-      // Optionally, you can perform any action after the record is added, such as displaying a success message or redirecting the user
+      toast.success("Domain record added successfully");
+      setFormData(initialValue);
     } catch (error) {
       console.error("Error adding domain record:", error);
-      // Optionally, you can handle the error, such as displaying an error message to the user
+      toast.error("Failed to add domain record");
     }
   };
 
@@ -43,13 +47,15 @@ const AddDomainRecordForm = () => {
         setDomainRecords(response?.data);
       } catch (error) {
         console.error("Error fetching domain records:", error);
+        toast.error("Failed to fetch domain records");
       }
     };
 
     fetchDomainRecords();
   }, []);
-
   return (
+    <div>
+      <Navbar />
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white border rounded-md">
       <h1 className="text-3xl font-bold mb-6 text-center">Domain Records</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -141,6 +147,7 @@ const AddDomainRecordForm = () => {
           Create Record
         </button>
       </form>
+    </div>
     </div>
   );
 };
