@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DomainList from './pages/DomainList';
 import DomainDetails from './pages/DomainDetails';
 import DomainForm from './pages/DomainForm';
-import axios from 'axios';
 import DomainEditForm from './pages/DomainEditForm';
-import DomainRecordsPage from './pages/DomainRecord';
-import AddDomainRecordForm from './pages/SubdomainRecord';
+import DomainRecordsPage from './pages/SubDomainRecord';
+import AddDomainRecordForm from './pages/AddSubdomainRecord';
+import EditSubdomainRecord from './pages/EditSubdomainRecord';
 
 const App = () => {
   
@@ -21,6 +21,7 @@ const App = () => {
           <Route path="/edit-domain/:id" element={<DomainEditForm />} />
           <Route path="/domain/record/:id" element={<DomainRecordsPage />} />
           <Route path="/create/record/:id" element={<AddDomainRecordForm />} />
+          <Route path="/edit-subdomain/:domainId/records/:domainName" element={<EditSubdomainRecord />} />
         </Routes>
       </div>
     </Router>
