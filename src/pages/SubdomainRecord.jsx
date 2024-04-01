@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { BASE_URL } from "../contast";
+import Navbar from "../components/Navbar";
 
 const DomainRecordsPage = () => {
   const initialState = {
@@ -60,6 +61,8 @@ const DomainRecordsPage = () => {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Domain Records</h1>
       <div className="flex items-end justify-end mb-3">
@@ -140,6 +143,7 @@ const DomainRecordsPage = () => {
             ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };

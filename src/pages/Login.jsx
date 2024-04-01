@@ -3,11 +3,11 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../contast';
 
-const Login = ({ history }) => {
+const Login = () => {
     const navigate = useNavigate()
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: 'hello@gmail.com',
+    password: 'hello123'
   });
 
   const handleChange = (e) => {
@@ -58,7 +58,7 @@ const Login = ({ history }) => {
               />
             </div>
           </div>
-          <p>Don't have an account <Link className='text-blue-600' to="/register">Register</Link></p>
+          {/* <p>Don't have an account <Link className='text-blue-600' to="/register">Register</Link></p> */}
           <div>
             <button
               type="submit"
