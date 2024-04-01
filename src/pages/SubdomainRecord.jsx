@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../contast";
 
-const AddDomainRecordForm = ({ domainId }) => {
-  const [formData, setFormData] = useState({
+const AddDomainRecordForm = () => {
+  const initialValue = {
     name: "",
     type: "",
     values: [],
     ttl: "",
-  });
+  }
+  const [formData, setFormData] = useState(initialValue);
+
+  const [domainRecords, setDomainRecords] = useState()
 
   const { id } = useParams();
 
@@ -21,14 +24,31 @@ const AddDomainRecordForm = ({ domainId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      formData.name = formData.name+'.'+domainRecords.name
       await axios.post(`${BASE_URL}/api/dns/domains/${id}/records`, formData);
       console.log("Domain record added successfully");
+      setFormData(initialValue)
       // Optionally, you can perform any action after the record is added, such as displaying a success message or redirecting the user
     } catch (error) {
       console.error("Error adding domain record:", error);
       // Optionally, you can handle the error, such as displaying an error message to the user
     }
   };
+
+  useEffect(() => {
+    const fetchDomainRecords = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/api/dns/domains/${id}`
+        );
+        setDomainRecords(response?.data);
+      } catch (error) {
+        console.error("Error fetching domain records:", error);
+      }
+    };
+
+    fetchDomainRecords();
+  }, []);
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white border rounded-md">
@@ -39,7 +59,7 @@ const AddDomainRecordForm = ({ domainId }) => {
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-            Name:
+            Subdomain:
           </label>
           <input
             type="text"
@@ -48,8 +68,9 @@ const AddDomainRecordForm = ({ domainId }) => {
             value={formData.name}
             onChange={handleChange}
             className="mt-1 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-500"
-            placeholder="Enter domain name"
+            placeholder="Enter subdomain"
           />
+          <div className="text-gray-700 text-xs italic mt-1">{domainRecords?.name}</div>
         </div>
         <div>
           <label
@@ -88,8 +109,11 @@ const AddDomainRecordForm = ({ domainId }) => {
           <textarea
             id="values"
             name="values"
-            value={formData.values}
-            onChange={handleChange}
+            value={formData.values.join('\n')}
+            onChange={(e) => {
+              const valuesArray = e.target.value.split('\n');
+              setFormData({ ...formData, values: valuesArray });
+            }}
             className="mt-1 p-3 border border-gray-300 rounded-md w-full h-32 resize-none focus:outline-none focus:border-blue-500"
             placeholder="Enter record values"
           />
