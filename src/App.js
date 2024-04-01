@@ -8,8 +8,9 @@ import AddDomainRecordForm from './pages/AddSubdomainRecord';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoutes';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import EditSubdomainRecord from './pages/EditSubdomainRecord';
 
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
           <Route exact path="/edit-domain/:id" element={<PrivateRoute><DomainEditForm /></PrivateRoute>} />
           <Route exact path="/domain/record/:id" element={<PrivateRoute><DomainRecordsPage /></PrivateRoute>} />
           <Route exact path="/create/record/:id" element={<PrivateRoute><AddDomainRecordForm /></PrivateRoute>} />
+          <Route exact path="/edit-subdomain/:domainId/records/:domainName" element={<PrivateRoute><EditSubdomainRecord /></PrivateRoute>} />
           <Route exact path="*" element={<h1>Page not found. Back to <Link className='text-blue-600' to="/login">login</Link></h1>} />
         </Routes>
         <ToastContainer />

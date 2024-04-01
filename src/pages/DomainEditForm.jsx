@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../contast";
-import { useParams } from "react-router-dom";
+import { redirect, useNavigate, useParams } from "react-router-dom";
+import Navbar from '../components/Navbar'
+import { toast } from 'react-toastify';
+
 
 const DomainEditForm = () => {
   const [domainData, setDomainData] = useState();
   const { id } = useParams();
+  const navigate = useNavigate()
   const initialValue = {
     comment: ""
   }
@@ -15,10 +19,16 @@ const DomainEditForm = () => {
     const { name, value } = e.target;
     setFormData({...formData, [name]: value})
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    editComment()
-    setFormData(initialValue)
+    try {
+      await editComment();
+      toast.success('Domain edited successfully');
+      setFormData(initialValue);
+    } catch (error) {
+      console.error("Error editing domain:", error);
+      toast.error('Failed to edit domain');
+    }
   };
 
   const getDomain = () => {
@@ -33,17 +43,15 @@ const DomainEditForm = () => {
        });
   };
 
-  const editComment = () => {
-    axios
-    .put(`${BASE_URL}/api/dns/domains/${id}`,formData)
-    .then((response) => {
-      console.log("Domain edited successfully:", response.data);
+  const editComment = async () => {
+    try {
+      const response = await axios.put(`${BASE_URL}/api/dns/domains/${id}`, formData);
       setDomainData(response.data);
-    })
-    .catch((error) => {
-      console.error("Error creating domain:", error);
-      // Add logic to handle error
-    });   
+      navigate('/domains')
+    } catch (error) {
+      console.error("Error editing domain:", error);
+      throw error;
+    }   
   }
 
   useEffect(() => {
@@ -51,6 +59,8 @@ const DomainEditForm = () => {
   }, []);
 
   return (
+    <div>
+    <Navbar />
     <div className="container mx-auto mt-6 w-[40%] border border-gray-300">
       <form
         onSubmit={handleSubmit}
@@ -108,6 +118,7 @@ const DomainEditForm = () => {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };
