@@ -4,7 +4,7 @@ import { BASE_URL } from "../contast";
 import { Link } from "react-router-dom";
 const DomainList = () => {
   const [domains, setDomains] = useState([]);
-  const [hostedZoneId, setHostedZoneId] = useState('')
+  const [hostedZoneId, setHostedZoneId] = useState("");
   useEffect(() => {
     axios
       .get(`${BASE_URL}/api/dns/domains`)
@@ -19,27 +19,73 @@ const DomainList = () => {
 
   const deleteHostedZoneHandler = async () => {
     try {
-      const response = await axios.delete(`${BASE_URL}/api/dns/domains/${hostedZoneId}`);
-      console.log('Hosted zone deleted successfully:', response.data);
-      window.location.reload()
+      const response = await axios.delete(
+        `${BASE_URL}/api/dns/domains/${hostedZoneId}`
+      );
+      console.log("Hosted zone deleted successfully:", response.data);
+      window.location.reload();
     } catch (error) {
-      console.error('Error deleting hosted zone:', error.message);
+      console.error("Error deleting hosted zone:", error.message);
     }
-  }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      uploadFile(formData);
+    }
+  };
+
+  const uploadFile = async (formData) => {
+    try {
+      console.log("file upload")
+      const response = await axios.post(
+        `${BASE_URL}/api/dns/domains/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File uploaded successfully:", response.data);
+      // Optionally, you can perform any action after the file upload is completed, such as displaying a success message or updating the UI
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      // Optionally, you can handle the error, such as displaying an error message to the user
+    }
+  };
 
   return (
     <div className="container m-auto">
       <h1 className="text-2xl font-bold mb-4 mt-6">List of Domains</h1>
       <div className="overflow-x-auto">
         <div className="flex items-end justify-end mb-6">
+          <button
+            class="ml-3 border border-gray-500 hover:bg-green-600 hover:border-none hover:text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              document.getElementById("fileInput").click();
+            }}
+          >
+            Bulk Upload
+          </button>
+          <input
+            type="file"
+            id="fileInput"
+            accept=".json"
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
           <Link
-           to={`/edit-domain/${hostedZoneId}`}
+            to={`/edit-domain/${hostedZoneId}`}
             class="ml-3 border border-gray-500 hover:bg-blue-600 hover:border-none hover:text-white font-bold py-2 px-4 rounded"
           >
             Edit
           </Link>
           <button
-           onClick={deleteHostedZoneHandler}
+            onClick={deleteHostedZoneHandler}
             class="mx-3 border border-gray-500 hover:bg-red-600 hover:border-none hover:text-white font-bold py-2 px-4 rounded"
           >
             Delete
@@ -55,7 +101,7 @@ const DomainList = () => {
         <table className="table-auto w-full border-collapse">
           <thead>
             <tr className="bg-gray-200">
-            <th className="border p-2"></th>
+              <th className="border p-2"></th>
               <th className="border p-2">ID</th>
               <th className="border p-2">Name</th>
               <th className="border p-2">Caller Reference</th>
@@ -67,14 +113,28 @@ const DomainList = () => {
           <tbody>
             {domains.map((zone) => (
               <tr key={zone.Id}>
-                 <td className="border p-2">
-                  <input type="radio" name="action" id="action" onChange={() => setHostedZoneId(zone.Id.split("/")[zone.Id.split("/").length - 1])} />
+                <td className="border p-2">
+                  <input
+                    type="radio"
+                    name="action"
+                    id="action"
+                    onChange={() =>
+                      setHostedZoneId(
+                        zone.Id.split("/")[zone.Id.split("/").length - 1]
+                      )
+                    }
+                  />
                 </td>
                 <td className="border p-2">
                   {zone.Id.split("/")[zone.Id.split("/").length - 1]}
                 </td>
                 <td className="border p-2">
-                  <Link to={`/domain/record/${zone.Id.split("/")[zone.Id.split("/").length - 1]}`} className="text-blue-600 hover:text-blue-700">
+                  <Link
+                    to={`/domain/record/${
+                      zone.Id.split("/")[zone.Id.split("/").length - 1]
+                    }`}
+                    className="text-blue-600 hover:text-blue-700"
+                  >
                     {zone.Name}
                   </Link>
                 </td>
